@@ -4,40 +4,50 @@ from random import randrange
 import signal
 from time import sleep
 import re
+import random
+import sys
+
+regex = re.compile('[0-9]')
 
 #generation du nombre aléatoire
 genenombre=random.randint(0, 100)
 
 #pour quitter proprement avec ctrl c
-def ctrl(sig, frame):
-	ecriture("vous avez quittez la partie avec ctrl+c")
-	sys.exit(0)
+def end_game(sig, frame):
+    ecrire('quitter avec CTRL+C ')
+    exit()
+signal.signal(signal.SIGINT, end_game)
 
-#Fonction qui lis dans du fichier
-def lecture():
-	file = open(path_file, "r")
-	input = file.readline().strip()
-	file.close()
-	return input
+#on lit dans le fichier texte
+def lire():
+    file = open("jeu.txt", "r")
+    msg = file.readline().strip()
+    file.close()
+    return msg
 
-#Fonction qui écrit dans un fichier
-def ecriture(msg):
-	file = open(path_file, "w")
-	file.write(msg)
-	file.close()
+# Fonctions qui écrire une réponse dans le fichier texte
+def ecrire(msg):
+    file = open("jeu.txt", "w")
+    file.write(msg)
+    file.close()
 
-def aurevoir():
-	ecriture("au revoir, la solution était {0}".format(genenombre))
+#message de bienvenu
+ecrire('Entrez un nombre entre 0 et 100 !')
 
-while input != "q":
-    input = ecriture()
-#Si le nombre est trop petit
-        if int(input) < genenombre:
-            ecriture("C'est trop petit !")
-#Sinon si le nombre est trop grand
-        elif int(input) > genenombre:
-            ecriture("C'est trop grand !\n")
-        else:
-            ecriture("Gagné")
-            break
-aurevoir()
+def jeux(finBoucle):
+    while(finBoucle is False):
+        saisie = lire()
+
+        if(regex.match(saisie)):
+            saisie = int(saisie)
+
+            if(saisie > genenombre):
+                ecrire("C'est moins")
+
+            elif(saisie < genenombre):
+                ecrire("C'est plus")
+            else:
+                ecrire('Felicitation\nLa solution etait '+str(genenombre)+'\nAu revoir !')
+                finBoucle = True
+finBoucle = False
+jeux(finBoucle)
