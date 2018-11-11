@@ -43,6 +43,11 @@ def checkMoveFile():
   else:
     moveArchiveTo(arch, direc_save)
 
+def end_game(sig, frame):
+    ecrire('quitter avec CTRL+C ')
+    exit()
+signal.signal(signal.SIGINT, end_game)
+
 def checkExistingArchive():
   if (os.path.exists(full_archive_path)):
     return True

@@ -45,6 +45,10 @@ def check():
   else:
     return 'C est moins'
 
+def end_game(sig, frame):
+    ecrire('quitter avec CTRL+C ')
+    exit()
+signal.signal(signal.SIGINT, end_game)
 
 found = randint(min, max)
 trying = -1

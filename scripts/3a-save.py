@@ -40,6 +40,11 @@ def checkExistingArchive():
   else:
     return False
 
+def end_game(sig, frame):
+    ecrire('quitter avec CTRL+C ')
+    exit()
+signal.signal(signal.SIGINT, end_game)
+
 def moveArchiveTo(archive_file, backup_direcoty):
   shutil.move(archive_file, direc_save)
 
